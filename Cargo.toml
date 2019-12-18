@@ -10,6 +10,7 @@ members = [
   "examples/rtfm-demo",
   "examples/spi-demo",
   "examples/twi-ssd1306",
+  "examples/pwm-demo"
 ]
 
 [profile.dev]
@@ -22,4 +23,3 @@ lto = false
 debug = true
 lto = true
 opt-level = "s"
-

@@ -14,6 +14,8 @@ pub use nrf52840_pac as target;
 pub mod clocks;
 pub mod delay;
 pub mod gpio;
+pub mod pwm;
+#[cfg(not(feature = "9160"))]
 pub mod rng;
 pub mod rtc;
 pub mod saadc;
