@@ -26,6 +26,6 @@ path = "../../nrf52832-hal"
 default-features = false
 features = ["xxAA-package"]
 
-[dependencies.nrf52-hal-common]
-path = "../../nrf52-hal-common"
-version = "=0.8.1"
+#[dependencies.nrf52-hal-common]
+#path = "../../nrf52-hal-common"
+#version = "=0.8.1"
