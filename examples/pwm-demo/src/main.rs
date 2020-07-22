@@ -13,6 +13,7 @@ use dwm1001::{
 };
 
 use nrf52832_hal::{
+    Timer,
     pwm::{self, Pwm, DecoderLoad, DecoderMode, WaveCounterMode},
 };
 
@@ -21,7 +22,8 @@ use nrf52832_hal::{
 fn main() -> ! {
     // instanciate board and timer
     let mut board = DWM1001::take().unwrap();
-    let mut timer = board.TIMER0.constrain();
+    //let mut timer = board.TIMER0.constrain();
+    let mut timer = Timer::new(board.TIMER0); // stolen from blinky
 
     let mut red = board.pins.SPIS_MOSI.into_floating_input().degrade();
     let mut green = board.pins.SPIS_MISO.into_floating_input().degrade();
@@ -31,6 +33,7 @@ fn main() -> ! {
         pwm_ch0: red,
         pwm_ch1: green,
         pwm_ch2: blue,
+        pwm_ch3: blue, // TODO added to silence compiler; what would a suitable pin here?
     };
 
     static sequence: [u16; 4] = [9000, 15000, 10000, 0x3333];
