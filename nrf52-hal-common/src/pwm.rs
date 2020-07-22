@@ -1,10 +1,8 @@
 //! HAL interface to the PWM peripheral
 use core::mem::size_of;
 use core::ops::Deref;
-use core::sync::atomic::{compiler_fence, Ordering::SeqCst};
 
-
-
+use crate::gpio::{Pin, Input, Floating};
 use crate::target::{
     pwm0,
     P0,
@@ -14,19 +12,10 @@ use crate::target::{
 #[cfg(any(feature = "52832", feature = "52840"))]
 // use crate::target::PWM0;
 
-use crate::{
-    gpio::{Output, Pin, PushPull, Input, Floating},
-    // slice_in_ram_or,
-    target_constants::EASY_DMA_SIZE,
-};
-
 pub use pwm0::prescaler::PRESCALERW as Prescaler;
 
 /// Interface to a PWM instance
-
 pub struct Pwm<T>(T);
-
-
 
 impl<T> Pwm<T>
 where
@@ -149,12 +138,13 @@ where
         self.0.loop_.write (|w| w.cnt().disabled());
     }
 
-    pub fn set_sequence_0(&mut self, sequence: [u16; 4], refresh_cnt: u32, enddelay_cnt: u32) {
+    pub fn set_sequence_0(&mut self, _sequence: [u16; 4], refresh_cnt: u32, enddelay_cnt: u32) {
 
-        static mut seq:[u16; 4] = [9000, 15000, 10000, 0x3333];
+        // TODO actually use sequence instead of hardcoding?
+        static mut SEQ:[u16; 4] = [9000, 15000, 10000, 0x3333];
 
         unsafe {
-        self.0.seq0.ptr.write (|w| w.ptr().bits(seq.as_ptr() as u32));
+        self.0.seq0.ptr.write (|w| w.ptr().bits(SEQ.as_ptr() as u32));
         self.0.seq0.cnt.write (|w| w.cnt().bits((size_of::<[u16; 4]>() / size_of::<u16>()) as u16));
 
         self.0.seq0.refresh.write (|w| w.cnt().bits(refresh_cnt));
@@ -163,12 +153,13 @@ where
 
     }
 
-    pub fn set_sequence_1(&mut self, sequence: [u16; 4], refresh_cnt: u32, enddelay_cnt: u32) {
+    pub fn set_sequence_1(&mut self, _sequence: [u16; 4], refresh_cnt: u32, enddelay_cnt: u32) {
 
-        static mut seq:[u16; 4] = [9000, 15000, 10000, 0x3333];
+        // TODO actually use sequence instead of hardcoding?
+        static mut SEQ:[u16; 4] = [9000, 15000, 10000, 0x3333];
 
         unsafe {
-        self.0.seq1.ptr.write (|w| w.ptr().bits(seq.as_ptr() as u32));
+        self.0.seq1.ptr.write (|w| w.ptr().bits(SEQ.as_ptr() as u32));
         self.0.seq1.cnt.write (|w| w.cnt().bits((size_of::<[u16; 4]>() / size_of::<u16>()) as u16));
 
         self.0.seq1.refresh.write (|w| w.cnt().bits(refresh_cnt));

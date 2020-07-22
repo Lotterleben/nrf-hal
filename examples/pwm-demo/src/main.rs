@@ -4,27 +4,17 @@
 // Panic provider crate
 use panic_halt as _;
 
-// String formatting
-use core::fmt::Write as writefmt;
-use heapless::String as HString;
-
 // Used to set the program entry point
 use cortex_m_rt::entry;
 
 // Provides definitions for our development board
 use dwm1001::{
-
-
     DWM1001,
 };
 
 use nrf52832_hal::{
-    prelude::*,
     pwm::{self, Pwm, DecoderLoad, DecoderMode, WaveCounterMode},
-    gpio::Level::Low,
 };
-
-
 
 
 #[entry]
@@ -53,7 +43,7 @@ fn main() -> ! {
             .set_sequence_0(sequence, 0, 0)
             .start_sequence_0();
 
-    'ready: loop {
+    loop {
         // blink red LED for not ready status
         timer.delay(250_000);
         board.leds.D11.enable();
