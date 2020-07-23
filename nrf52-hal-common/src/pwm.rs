@@ -10,6 +10,7 @@ use crate::target::{
 };
 
 #[cfg(any(feature = "52832", feature = "52840"))]
+// TODO if this is commented out don't we also need to comment out the feature above?
 // use crate::target::PWM0;
 
 pub use pwm0::prescaler::PRESCALERW as Prescaler;

@@ -27,11 +27,11 @@ fn main() -> ! {
     let mut board = DWM1001::take().unwrap();
     let mut timer = board.TIMER0.constrain();
 
-    let mut red = board.pins.SPIS_MOSI.into_floating_input().degrade();
-    let mut green = board.pins.SPIS_MISO.into_floating_input().degrade();
-    let mut blue = board.pins.SPIS_CLK.into_floating_input().degrade();
+    let red = board.pins.SPIS_MOSI.into_floating_input().degrade();
+    let green = board.pins.SPIS_MISO.into_floating_input().degrade();
+    let blue = board.pins.SPIS_CLK.into_floating_input().degrade();
     // TODO double check that this is actually unused
-    let mut unused = board.pins.GPIO_12.into_floating_input().degrade();
+    let unused = board.pins.GPIO_12.into_floating_input().degrade();
 
     let channels = pwm::Channels {
         pwm_ch0: red,
@@ -40,7 +40,7 @@ fn main() -> ! {
         pwm_ch3: unused, // TODO added to silence compiler; what would a suitable pin here?
     };
 
-    static sequence: [u16; 4] = [9000, 15000, 10000, 0x3333];
+    static SEQUENCE: [u16; 4] = [9000, 15000, 10000, 0x3333];
 
     let mut pulse = Pwm::new(board.PWM0, channels, pwm::Prescaler::DIV_8);
 
@@ -48,7 +48,7 @@ fn main() -> ! {
     pulse.set_decoder(DecoderLoad::Individual, DecoderMode::RefreshCount);
     pulse.set_wavecounter(WaveCounterMode::Up);
     pulse.disable_loop();
-    pulse.set_sequence_0(sequence, 0, 0);
+    pulse.set_sequence_0(SEQUENCE, 0, 0);
     pulse.start_sequence_0();
 
     // todo pick sensible value based on cycle length
