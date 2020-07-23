@@ -23,3 +23,7 @@ lto = false
 debug = true
 lto = true
 opt-level = "s"
+
+[patch.crates-io.nrf52-hal-common]
+path = "./nrf52-hal-common"
+version = "=0.8.1"
